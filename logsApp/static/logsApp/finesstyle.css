@@ -1,0 +1,10 @@
+.fine-incont-flex {
+  display: flex;
+  flex-direction: column;
+  font-size: larger;
+  font-weight: bold;
+}
+
+.main-fin {
+  margin: 0 auto !important;
+}
