@@ -223,19 +223,20 @@ def finesAccidents(request):
         try:
             emp_instance = EmployesInfo.objects.get(ceoNumber=emp_number)
         except EmployesInfo.DoesNotExist:
-            emp_err_message = "الرقم الاداري غير صحيح"
-            return render(request, "logsApp/finesaccidents.html", {
-                'fines': fines,
-                'emp_err_message': emp_err_message,
-                'carNumber': car_number,
-                'empNumber': emp_number,
-                'text': text,
-                'reportPdfFile': report_pdf_file,
-                'carPaperworkFile': car_paperwork_file,
-                'licenseFiles': license_files,
-                'images': images,
-                'form_open': True
-            })
+            emp_instance = None
+            # emp_err_message = "الرقم الاداري غير صحيح"
+            # return render(request, "logsApp/finesaccidents.html", {
+            #     'fines': fines,
+            #     'emp_err_message': emp_err_message,
+            #     'carNumber': car_number,
+            #     'empNumber': emp_number,
+            #     'text': text,
+            #     'reportPdfFile': report_pdf_file,
+            #     'carPaperworkFile': car_paperwork_file,
+            #     'licenseFiles': license_files,
+            #     'images': images,
+            #     'form_open': True
+            # })
 
         # Create the FinesAccidents object without files first
         fines_accident = FinesAccidents.objects.create(
