@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-cnmdbsktx*k=t7nyg3&p4ea9qujux3vy949cyr^*gga4%($pn5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -125,5 +125,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
-DEBUG = False
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
