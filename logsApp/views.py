@@ -353,7 +353,7 @@ def fineC(request):
         fine_time = request.POST.get('finetime')
         fine_car_number = request.POST.get('finecar')
         dubai_tz = pytz.timezone('Asia/Dubai')
-        combined_fine_datetime = dubai_tz.localize(timezone.datetime.strptime(f"{fine_date} {fine_time}", '%Y-%m-%d %H:%M'))
+        combined_fine_datetime = dubai_tz.localize(timezone.datetime.strptime(fine_date + ' ' + fine_time, '%Y-%m-%d %H:%M'))
         print(combined_fine_datetime.time())
         try:
             car_ins = RegistredCars.objects.get(carNumber=fine_car_number)
@@ -411,8 +411,42 @@ def carddetails(request, fine_id):
         'license_images': license_images
     })
 
+
 def markasfixed(request, fine_id):
     fine = get_object_or_404(FinesAccidents, id=fine_id)
     fine.fixin_date = timezone.now()
     fine.save()
     return redirect('logsApp:carddetails', fine_id=fine_id)
+
+
+
+
+# def seed(request):
+#     for car in carsList:
+#         if not RegistredCars.objects.filter(carNumber=car["vnumber"]).exists():
+#             new_car = RegistredCars.objects.create(
+#                 carNumber=car["vnumber"],
+#                 vType=car["vType"],
+#                 carYear=car["Myear"],
+#                 cownerEmpNumber=car["empid"],
+#                 cownerName=car["empName"],
+#                 cownerPhone=car["tel"],
+#                 section=car["section"],
+#             )
+#             new_car.save()
+            
+#     return redirect('logsApp:index')
+
+# def sync_employees(request):
+#     for emp in empInfo:
+#         if not EmployesInfo.objects.filter(ceoNumber=emp["empId"]).exists():
+#             new_emp = EmployesInfo.objects.create(
+#                 ceoNumber=emp["empId"],
+#                 ceoName=emp["empName"],
+#                 phoneNumber=emp["tel"],
+#                 position=emp["job"],
+#                 section=emp["Sections"]
+#             )
+#             new_emp.save()
+#     return redirect('logsApp:index')
+
