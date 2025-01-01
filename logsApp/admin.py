@@ -3,6 +3,12 @@ from .models import RegistredCars,EmployesInfo,InUseCars,LogsC,FinesAccidents,Fi
 models_list = [LogsC,RegistredCars,EmployesInfo,InUseCars,FinesAccidents,FinesAccidentsImage,LicenseFile]
 
 
+class EmployesInfoAdmin(admin.ModelAdmin):
+    list_display = ('ceoName','ceoNumber','section','EmpHaveCar')
+    search_fields = ('ceoName','ceoNumber')
+    list_filter = ('section',)
+
+
 class LogsCAdmin(admin.ModelAdmin):
     list_display = ('id','Logs_employee_ins', 'taken_date','taken_time','return_date', 'return_time','Logs_car_ins')
     search_fields = ('taken_date', 'return_time')
@@ -15,14 +21,14 @@ class RegCarsAdmin(admin.ModelAdmin):
     list_filter = ('vType',)
 
 class FinesAccidentsAdmin(admin.ModelAdmin):
-    list_display = ('car','text','created_at','report_date')
+    # list_display = ('car','text','report_date')
     search_fields = ('text','car')
-    list_filter = ('created_at',)
+    list_filter = ()
 
 admin.site.register(LicenseFile)
 admin.site.register(LogsC, LogsCAdmin)
 admin.site.register(RegistredCars, RegCarsAdmin)
-admin.site.register(EmployesInfo)
+admin.site.register(EmployesInfo,EmployesInfoAdmin)
 admin.site.register(InUseCars)
-admin.site.register(FinesAccidents,FinesAccidentsAdmin)
+admin.site.register(FinesAccidents)
 admin.site.register(FinesAccidentsImage)

@@ -10,13 +10,13 @@ def fines_accident_pdf_upload_to(instance, filename):
     return f'fines_accidents/{car_number}_{instance.id}/{filename}'
 
 class RegistredCars(models.Model):
+    carNumber = models.TextField(default='0')
+    vType = models.TextField(max_length=100,null=True)
     carYear = models.IntegerField(null=True)
-    cownerEmpNumber = models.IntegerField(null=True)
+    cownerEmpNumber = models.TextField(null=True)
     cownerName= models.TextField(null=True)
     cownerPhone = models.TextField(null=True)
     section = models.TextField(null=True)
-    carNumber = models.TextField(default='0')
-    vType = models.TextField(max_length=100,null=True)
     carIsInparking = models.BooleanField(default=True)
     def __str__(self):
         return str(f" رقم المركبه: {self.carNumber}")    

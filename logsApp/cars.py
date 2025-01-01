@@ -229,5 +229,4 @@ carsList = [
 {"ID":"114","vnumber":"4-29735","vType":"TOYOTA FORTUNER 5DR","Myear":"2024","empid":"22648","empName":"Khalid Mohamed A.A. Jamal","tel":"0558060351","section":"قسم الرقابة الغذائية"}
 ,
 {"ID":"115","vnumber":"4-46303","vType":"TOYOTA FORTUNER 5DR","Myear":"2024","empid":"29176","empName":"MOAMAD A.A.M ALJESMI","tel":"050/2112776","section":"قسم الرقابة الغذائية"}
-
 ]
