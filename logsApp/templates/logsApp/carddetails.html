@@ -14,6 +14,10 @@
     </p>
   </div>
   <div class="card-details">
+    <div class="card-id-container">
+      <strong>رقم البطاقه :</strong>
+      <strong class="CardIdNumber"> {{ fine.id }} </strong>
+    </div>
     <div>
       <h2>رقم المركبه: {{ fine.car.carNumber }}</h2>
     </div>
@@ -142,7 +146,7 @@
           placeholder="الرقم الإداري"
         /><br />
         {% endif %}
-        
+
         <button type="submit">إرسال</button>
       </form>
     </div>
