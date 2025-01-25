@@ -74,10 +74,21 @@ WSGI_APPLICATION = 'parkingLogsapp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',  # Replace with your database name
+        'USER': 'postgres',  # Replace with your database user
+        'PASSWORD': 'x2menDsnder',  # Replace with your database password
+        'HOST': 'localhost',  # Set to 'localhost' for local PostgreSQL
+        'PORT': '5432',  # Default PostgreSQL port
     }
 }
 
