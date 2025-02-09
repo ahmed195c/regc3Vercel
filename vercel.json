@@ -2,23 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "parkingLogsapp",
-      "use": "@vercel/python",
-      "config": { "maxLambdaSize": "15mb" }
+      "src": "wsgi.py",
+      "use": "@vercel/python"
     }
   ],
   "routes": [
     {
-      "src": "/static/(.*)",
-      "dest": "/static/$1"
-    },
-    {
-      "src": "/media/(.*)",
-      "dest": "/media/$1"
-    },
-    {
       "src": "/(.*)",
-      "dest": "/parkingLogsapp"
+      "dest": "wsgi.py"
     }
   ]
 }
