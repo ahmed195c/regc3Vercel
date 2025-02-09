@@ -12,6 +12,37 @@ import pytz
 from django.core.paginator import Paginator
 import shutil
 import os
+from .cars import carsList
+from .newempData import newemp
+
+
+def seedemp(request):
+    for i in newemp:
+        emp, created = EmployesInfo.objects.update_or_create(
+            ceoNumber=i["empId"],
+            defaults={
+                'ceoName': i["empName"],
+                'phoneNumber': i["tel"],
+                'jobTtile': i["jobTitle"],
+                'department': i["department"],
+                'unit': i["unit"],
+                'nationality': i["nationality"]
+            }
+        )
+
+    for q in carsList:
+        car, created = RegistredCars.objects.update_or_create(
+            carNumber=q["vnumber"],
+            defaults={
+                'vType': q["vType"],
+                'carYear': q['Myear'],
+                'cownerEmpNumber': q['empid'],
+                'cownerName': q['empName'],          
+            }
+        )
+
+    return HttpResponse("done")
+
 
 def remove_non_numeric(s):
     return re.sub(r'\D', '', s)
