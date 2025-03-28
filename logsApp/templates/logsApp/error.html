@@ -1,0 +1,8 @@
+{% extends "logsApp/layout.html" %} {% load static %} {% block title %}Error{%
+endblock %} {% block body %}
+<div class="error-container">
+  <h1>Error</h1>
+  <p>{{ error_message }}</p>
+  <button onclick="window.location='/'">Return to Home</button>
+</div>
+{% endblock %}

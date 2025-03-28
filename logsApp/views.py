@@ -56,7 +56,14 @@ def removechars(c):
     return c
 
 def index(request):
-    return render(request, "logsApp/layout.html")
+    try:
+        # Get all in-use cars for the dashboard
+        all_in_use_cars = InUseCars.objects.select_related('car', 'employee').all().order_by('-id')
+        return render(request, "logsApp/registerCar.html", {"l": all_in_use_cars})
+    except Exception as e:
+        print(f"Error in index view: {str(e)}")
+        # Return a simple error page if something goes wrong
+        return render(request, "logsApp/error.html", {"error_message": "An error occurred. Please try again."})
 
 def registerCar(request):
     all_in_use_cars = InUseCars.objects.all().order_by('-id')
