@@ -240,57 +240,61 @@ def is_pdf(file_field):
 def AccidentsRecords(request):
     fines = AccidentsRecord.objects.all()
     if request.method == "POST":
-        car_number = request.POST.get('carNumber')
-        emp_number = request.POST.get('empNumber')
-        text = request.POST.get('text')
-        report_pdf_file = request.FILES.get('reportPdfFile')
-        car_paperwork_file = request.FILES.get('carPaperworkFile')
-        license_files = request.FILES.getlist('licenseFiles')
-        images = request.FILES.getlist('images')
-
         try:
-            car_instance = RegistredCars.objects.get(carNumber=car_number)
-        except RegistredCars.DoesNotExist:
-            car_instance = None
-            
-        emp_instance = None
-        if emp_number:
+            car_number = request.POST.get('carNumber')
+            emp_number = request.POST.get('empNumber')
+            text = request.POST.get('text')
+            report_pdf_file = request.FILES.get('reportPdfFile')
+            car_paperwork_file = request.FILES.get('carPaperworkFile')
+            license_files = request.FILES.getlist('licenseFiles')
+            images = request.FILES.getlist('images')
+
             try:
-                emp_instance = EmployesInfo.objects.get(ceoNumber=emp_number)
-            except EmployesInfo.DoesNotExist:
-                emp_err_message = "الرقم الاداري غير صحيح"
-                return render(request, "logsApp/accidentsPage.html", {
-                    'form_open': True,
-                    'fines': fines,
-                    'emp_err_message': emp_err_message,
-                    'images': images,
-                    'carNumber': car_number,
-                    'empNumber': emp_number,
-                    'text': text,
-                    'reportPdfFile': report_pdf_file,
-                    'carPaperworkFile': car_paperwork_file,
-                    'licenseFiles': license_files
-                })
+                car_instance = RegistredCars.objects.get(carNumber=car_number)
+            except RegistredCars.DoesNotExist:
+                car_instance = None
+                
+            emp_instance = None
+            if emp_number:
+                try:
+                    emp_instance = EmployesInfo.objects.get(ceoNumber=emp_number)
+                except EmployesInfo.DoesNotExist:
+                    emp_err_message = "الرقم الاداري غير صحيح"
+                    return render(request, "logsApp/accidentsPage.html", {
+                        'form_open': True,
+                        'fines': fines,
+                        'emp_err_message': emp_err_message,
+                        'images': images,
+                        'carNumber': car_number,
+                        'empNumber': emp_number,
+                        'text': text,
+                        'reportPdfFile': report_pdf_file,
+                        'carPaperworkFile': car_paperwork_file,
+                        'licenseFiles': license_files
+                    })
 
-        accidents_record = AccidentsRecord.objects.create(
-            car=car_instance,
-            text=text)
+            accidents_record = AccidentsRecord.objects.create(
+                car=car_instance,
+                text=text)
 
-        if report_pdf_file:
-            accidents_record.report_pdf_file = report_pdf_file
-        if car_paperwork_file:
-            accidents_record.car_paperwork_file = car_paperwork_file
+            if report_pdf_file:
+                accidents_record.report_pdf_file = report_pdf_file
+            if car_paperwork_file:
+                accidents_record.car_paperwork_file = car_paperwork_file
 
-        if emp_instance:
-            accidents_record.employees.add(emp_instance)
+            if emp_instance:
+                accidents_record.employees.add(emp_instance)
 
-        for image in images:
-            FinesAccidentsImage.objects.create(accidents_record=accidents_record, image=image)
+            for image in images:
+                FinesAccidentsImage.objects.create(accidents_record=accidents_record, image=image)
 
-        for license_file in license_files:
-            LicenseFile.objects.create(accidents_record=accidents_record, file=license_file)
+            for license_file in license_files:
+                LicenseFile.objects.create(accidents_record=accidents_record, file=license_file)
 
-        accidents_record.save()
+            accidents_record.save()
+        except Exception as e:
+            print(f"Error in AccidentsRecords view: {str(e)}")
+            # You might want to add error handling here
 
     return render(request, "logsApp/accidentsPage.html", {'fines': fines, 'form_open': False})
 
@@ -412,31 +416,35 @@ def fineC(request):
 def carddetails(request, fine_id):
     fine = get_object_or_404(AccidentsRecord, id=fine_id)
     if request.method == "POST":
-        report_pdf_file = request.FILES.get('reportPdfFile')
-        car_paperwork_file = request.FILES.get('carPaperworkFile')
-        license_files = request.FILES.getlist('licenseFiles')
-        images = request.FILES.getlist('images')
-        emp_number = request.POST.get('empNumber')
+        try:
+            report_pdf_file = request.FILES.get('reportPdfFile')
+            car_paperwork_file = request.FILES.get('carPaperworkFile')
+            license_files = request.FILES.getlist('licenseFiles')
+            images = request.FILES.getlist('images')
+            emp_number = request.POST.get('empNumber')
 
-        if report_pdf_file:
-            fine.report_pdf_file = report_pdf_file
-        if car_paperwork_file:
-            fine.car_paperwork_file = car_paperwork_file
+            if report_pdf_file:
+                fine.report_pdf_file = report_pdf_file
+            if car_paperwork_file:
+                fine.car_paperwork_file = car_paperwork_file
 
-        for image in images:
-            FinesAccidentsImage.objects.create(accidents_record=fine, image=image)
+            for image in images:
+                FinesAccidentsImage.objects.create(accidents_record=fine, image=image)
 
-        for license_file in license_files:
-            LicenseFile.objects.create(accidents_record=fine, file=license_file)
+            for license_file in license_files:
+                LicenseFile.objects.create(accidents_record=fine, file=license_file)
 
-        if emp_number:
-            try:
-                emp_instance = EmployesInfo.objects.get(ceoNumber=emp_number)
-                fine.employees.add(emp_instance)
-            except EmployesInfo.DoesNotExist:
-                pass
+            if emp_number:
+                try:
+                    emp_instance = EmployesInfo.objects.get(ceoNumber=emp_number)
+                    fine.employees.add(emp_instance)
+                except EmployesInfo.DoesNotExist:
+                    pass
 
-        fine.save()
+            fine.save()
+        except Exception as e:
+            print(f"Error in carddetails view: {str(e)}")
+            # You might want to add error handling here
 
     license_files = []
     license_images = []
@@ -455,11 +463,6 @@ def markasfixed(request, fine_id):
     fine = get_object_or_404(AccidentsRecord, id=fine_id)
     fine.fixin_date = timezone.now()
 
-    fine.save()
-    return redirect('logsApp:carddetails', fine_id=fine_id)
-def markasfixed(request, fine_id):
-    fine = get_object_or_404(AccidentsRecord, id=fine_id)
-    fine.fixin_date = timezone.now()
     fine.save()
     return redirect('logsApp:carddetails', fine_id=fine_id)
 
