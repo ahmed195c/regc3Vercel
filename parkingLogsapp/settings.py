@@ -135,8 +135,8 @@ if DEBUG:
     print(f"AWS_STORAGE_BUCKET_NAME: {'Set' if AWS_STORAGE_BUCKET_NAME else 'Not Set'}")
     print(f"AWS_S3_REGION_NAME: {'Set' if AWS_S3_REGION_NAME else 'Not Set'}")
 
-# Only configure S3 if all required variables are present
-if all([AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_STORAGE_BUCKET_NAME, AWS_S3_REGION_NAME]):
+# Always use S3 in production (Vercel)
+if not DEBUG:
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
     AWS_S3_FILE_OVERWRITE = False
     AWS_DEFAULT_ACL = 'public-read'
@@ -154,12 +154,10 @@ if all([AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_STORAGE_BUCKET_NAME, AWS_S
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
     MEDIA_ROOT = 'media'
 else:
-    # Fallback to local storage if S3 is not configured
+    # Use local storage only in development
     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
     MEDIA_URL = '/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-    if DEBUG:
-        print("Warning: AWS S3 configuration incomplete. Falling back to local storage.")
 
 # Add CORS configuration
 AWS_S3_CORS_RULES = [
