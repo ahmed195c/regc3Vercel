@@ -3,17 +3,26 @@ import os
 import shutil
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
+from django.conf import settings
 
 def fines_accident_file_upload_to(instance, filename):
-    car_number = instance.accidents_record.car.carNumber if instance.accidents_record.car else 'unknown'
-    return f'fines_accidents/{car_number}_{instance.accidents_record.id}/{filename}'
+    # Get the car number and record ID safely
+    car_number = instance.accidents_record.car.carNumber if instance.accidents_record and instance.accidents_record.car else 'unknown'
+    record_id = instance.accidents_record.id if instance.accidents_record else 'unknown'
+    # Create a path that works with both local and S3 storage
+    return f'fines_accidents/{car_number}_{record_id}/{filename}'
 
 def fines_accident_pdf_upload_to(instance, filename):
+    # Get the car number safely
     car_number = instance.car.carNumber if instance.car else 'unknown'
+    # Create a path that works with both local and S3 storage
     return f'fines_accidents/{car_number}_{instance.id}/{filename}'
 
 def paid_fine_image_upload_to(instance, filename):
-    return f'paid_fines/{instance.id}_{instance.car.carNumber}/{filename}'
+    # Get the car number safely
+    car_number = instance.car.carNumber if instance.car else 'unknown'
+    # Create a path that works with both local and S3 storage
+    return f'paid_fines/{instance.id}_{car_number}/{filename}'
 
 class RegistredCars(models.Model):
     carYear = models.IntegerField(null=True)
