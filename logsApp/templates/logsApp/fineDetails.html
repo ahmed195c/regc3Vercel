@@ -1,0 +1,69 @@
+{% extends "logsApp/layout.html" %} {% load static %} {% block title %} تفاصيل
+المخالفة {% endblock %} {% block css %} {{ block.super }}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'logsApp/finesstyle.css' %}"
+/>
+{% endblock %} {% block body %}
+<div class="fine-details-container">
+  <h1 class="page-title">تفاصيل المخالفة</h1>
+  <div class="fine-details">
+    <p><strong>رقم السيارة:</strong> {{ fine.car.carNumber }}</p>
+    <p><strong>اسم الموظف:</strong> {{ fine.employe.ceoName }}</p>
+    <p><strong>الرقم الإداري:</strong> {{ fine.employe.ceoNumber }}</p>
+    <p><strong>تاريخ المخالفة:</strong> {{ fine.created_at|date:"Y-m-d" }}</p>
+    <p><strong>وقت المخالفة:</strong> {{ fine.created_at|time:"h:i A" }}</p>
+    <p><strong>تاريخ الدفع:</strong> {{ fine.paidDate|date:"Y-m-d" }}</p>
+    <div>
+      <h2>ملفات الدفع:</h2>
+      {% for file in fine_files %}
+      <p class="downladbtn">
+        <a class="downladbtn" target="_blank" href="{{ file.url }}"
+          >تحميل ملف الدفع (PDF)</a
+        >
+      </p>
+      {% endfor %} {% for image in fine_images %}
+      <img src="{{ image.url }}" alt="صورة الدفع" class="large-image" />
+      {% endfor %}
+    </div>
+    {% if fine_files or fine_images %}
+    <form method="POST" action="{% url 'logsApp:deleteFineImage' fine.id %}">
+      {% csrf_token %}
+      <button type="submit" class="submit-form">حذف ملف الدفع</button>
+    </form>
+    {% endif %}
+  </div>
+  {% if not fine.paidDate %}
+  <form
+    method="POST"
+    action="{% url 'logsApp:fineDetails' fine.id %}"
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+    <label for="fineDate" class="form-label">تاريخ الدفع</label>
+    <input
+      type="date"
+      id="fineDate"
+      name="fineDate"
+      class="input-date"
+      required
+    /><br />
+    <label for="paidFineImage" class="form-label"
+      >تحميل ملف الدفع (PDF أو صورة)</label
+    >
+    <input
+      type="file"
+      id="paidFineImage"
+      name="paidFineImage"
+      accept="application/pdf,image/*"
+      class="input-file"
+    /><br />
+    <button type="submit" class="submit-form">حفظ</button>
+  </form>
+  {% endif %}
+  <button onclick="window.location='{% url 'logsApp:finec' %}'">
+    العودة إلى صفحة المخالفات
+  </button>
+</div>
+{% endblock %}

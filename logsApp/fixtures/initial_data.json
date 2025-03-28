@@ -1,0 +1,20 @@
+[
+    {
+        "model": "logsApp.registredcars",
+        "pk": 1,
+        "fields": {
+            "carNumber": "123ABC",
+            "carIsInparking": true
+        }
+    },
+    {
+        "model": "logsApp.employesinfo",
+        "pk": 1,
+        "fields": {
+            "ceoName": "John Doe",
+            "ceoNumber": "1001",
+            "EmpHaveCar": false
+        }
+    }
+    // Add more data as needed
+]

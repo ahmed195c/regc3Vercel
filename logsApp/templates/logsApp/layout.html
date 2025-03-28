@@ -1,0 +1,162 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% block css %}
+    <link href="{% static 'logsApp/layout.css' %}" rel="stylesheet" />
+    <link href="{% static 'logsApp/reg.css'%}" rel="stylesheet" />
+    <link href="{% static 'logsApp/finesstyle.css'%}" rel="stylesheet" />
+    <link
+      href="{% static 'logsApp/accidentsPageStyle.css'%}"
+      rel="stylesheet"
+    />
+    {% endblock %}
+    <script src="{% static 'logsApp/js/script.js' %}" defer></script>
+    <title>{% block title %}Document{% endblock %}</title>
+  </head>
+  <body>
+    <header class="dd">
+      <div class="header-cont">
+        <div class="logo-cont">
+          <img
+            class="logo"
+            src="{% static 'logsApp/imgs/sm-logo.png' %}"
+            alt=""
+          />
+        </div>
+        <div class="navs-cont">
+          <ul class="nav-links">
+            {% comment %}
+            <li>
+              <button
+                class="nav-link-btn-unique"
+                onclick="window.location='{% url 'logsApp:addNewEmp' %}'"
+              >
+                اضافة موظف جديد
+              </button>
+            </li>
+            {% endcomment %}
+            <li>
+              <button
+                class="nav-link-btn-unique"
+                onclick="window.location='{% url 'logsApp:finec' %}'"
+              >
+                حصر المخالفات
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-link-btn-unique"
+                onclick="window.location='{% url 'logsApp:AccidentsRecords' %}'"
+              >
+                سجل المخالفات و الحوادث
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-link-btn-unique"
+                onclick="window.location='{% url 'logsApp:logslink' %}'"
+              >
+                سجل الاستلام والتسليم
+              </button>
+            </li>
+            <li>
+              <button
+                class="nav-link-btn-unique"
+                onclick="window.location='{% url 'logsApp:add' %}'"
+              >
+                استلام و ارجاع المركبه
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </header>
+    <main>{% block body %} {% endblock %}</main>
+    <footer class=""></footer>
+    <script>
+      function fadeOutMessage(id) {
+        var message = document.getElementById(id);
+        if (message) {
+          message.style.transition = "opacity 1s ease-out";
+          message.style.opacity = 0;
+          setTimeout(function () {
+            message.style.display = "none";
+          }, 1000);
+        }
+      }
+
+      function toggleDateInput() {
+        var dateType = document.getElementById("dateType").value;
+        document.getElementById("dayInput").style.display =
+          dateType === "day" ? "block" : "none";
+        document.getElementById("monthInput").style.display =
+          dateType === "month" ? "block" : "none";
+        document.getElementById("yearInput").style.display =
+          dateType === "year" ? "block" : "none";
+      }
+
+      function toggleFilters() {
+        var filtersMain = document.getElementById("filtersMain");
+        if (filtersMain.classList.contains("show")) {
+          filtersMain.classList.remove("show");
+          setTimeout(function () {
+            filtersMain.style.display = "none";
+          }, 500); // Match the transition duration
+        } else {
+          filtersMain.style.display = "block";
+          setTimeout(function () {
+            filtersMain.classList.add("show");
+          }, 10); // Slight delay to trigger the transition
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        var tableContainer = document.getElementById("tableContainer");
+        tableContainer.addEventListener("scroll", function () {
+          if (tableContainer.scrollTop === 0) {
+            window.scrollBy(0, -1);
+          } else if (
+            tableContainer.scrollTop + tableContainer.clientHeight >=
+            tableContainer.scrollHeight
+          ) {
+            window.scrollBy(0, 1);
+          }
+        });
+      });
+
+      // forms show hide button
+      function toggleFineForm() {
+        var form = document.getElementById("fineForm");
+        if (form.style.display === "none" || form.style.opacity === "0") {
+          form.style.display = "block";
+          setTimeout(function () {
+            form.style.opacity = "1";
+          }, 10);
+        } else {
+          form.style.opacity = "0";
+          setTimeout(function () {
+            form.style.display = "none";
+          }, 500);
+        }
+      }
+
+      function toggleAccidentForm() {
+        var form = document.getElementById("addEventForm");
+        if (form.style.display === "none" || form.style.opacity === "0") {
+          form.style.display = "block";
+          setTimeout(function () {
+            form.style.opacity = "1";
+          }, 10);
+        } else {
+          form.style.opacity = "0";
+          setTimeout(function () {
+            form.style.display = "none";
+          }, 500);
+        }
+      }
+    </script>
+  </body>
+</html>
