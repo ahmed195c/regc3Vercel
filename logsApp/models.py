@@ -116,10 +116,8 @@ class FinesRecord(models.Model):
     paid_fine_image = models.FileField(upload_to=paid_fine_image_upload_to, null=True, blank=True, max_length=500)
 
     def delete(self, *args, **kwargs):
-        if self.paid_fine_image:
-            directory = os.path.dirname(self.paid_fine_image.path)
-            if os.path.exists(directory):
-                shutil.rmtree(directory)
+        # No need to manually delete files when using S3 storage
+        # Django's storage backend will handle this automatically
         super().delete(*args, **kwargs)
 
     def __str__(self):
@@ -127,34 +125,19 @@ class FinesRecord(models.Model):
 
 @receiver(post_delete, sender=FinesAccidentsImage)
 def delete_fines_accidents_image_files(sender, instance, **kwargs):
-    if instance.image:
-        if os.path.isfile(instance.image.path):
-            os.remove(instance.image.path)
-        directory = os.path.dirname(instance.image.path)
-        if os.path.exists(directory):
-            shutil.rmtree(directory)
+    # No need to manually delete files when using S3 storage
+    # Django's storage backend will handle this automatically
+    pass
 
 @receiver(post_delete, sender=LicenseFile)
 def delete_license_file_files(sender, instance, **kwargs):
-    if instance.file:
-        if os.path.isfile(instance.file.path):
-            os.remove(instance.file.path)
-        directory = os.path.dirname(instance.file.path)
-        if os.path.exists(directory):
-            shutil.rmtree(directory)
+    # No need to manually delete files when using S3 storage
+    # Django's storage backend will handle this automatically
+    pass
 
 @receiver(post_delete, sender=AccidentsRecord)
 def delete_accidents_record_files(sender, instance, **kwargs):
-    if instance.report_pdf_file:
-        if os.path.isfile(instance.report_pdf_file.path):
-            os.remove(instance.report_pdf_file.path)
-        directory = os.path.dirname(instance.report_pdf_file.path)
-        if os.path.exists(directory):
-            shutil.rmtree(directory)
-    if instance.car_paperwork_file:
-        if os.path.isfile(instance.car_paperwork_file.path):
-            os.remove(instance.car_paperwork_file.path)
-        directory = os.path.dirname(instance.car_paperwork_file.path)
-        if os.path.exists(directory):
-            shutil.rmtree(directory)
+    # No need to manually delete files when using S3 storage
+    # Django's storage backend will handle this automatically
+    pass
 

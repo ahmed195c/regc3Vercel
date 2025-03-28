@@ -491,11 +491,8 @@ def fineDetails(request, fine_id):
 def deleteFineImage(request, fine_id):
     fine = get_object_or_404(FinesRecord, id=fine_id)
     if fine.paid_fine_image:
-        # Get the directory path
-        directory = os.path.dirname(fine.paid_fine_image.path)
-        # Delete the entire directory
-        shutil.rmtree(directory)
         # Clear the fields in the database
+        # The S3 storage backend will handle file deletion automatically
         fine.paid_fine_image = None
         fine.paidDate = None
         fine.save()
