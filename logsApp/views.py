@@ -423,25 +423,56 @@ def carddetails(request, fine_id):
             images = request.FILES.getlist('images')
             emp_number = request.POST.get('empNumber')
 
+            print(f"Processing files for fine_id: {fine_id}")
+            print(f"Report PDF: {report_pdf_file}")
+            print(f"Car Paperwork: {car_paperwork_file}")
+            print(f"License Files: {len(license_files)}")
+            print(f"Images: {len(images)}")
+
             if report_pdf_file:
-                fine.report_pdf_file = report_pdf_file
+                try:
+                    fine.report_pdf_file = report_pdf_file
+                    print("Successfully saved report PDF")
+                except Exception as e:
+                    print(f"Error saving report PDF: {str(e)}")
+
             if car_paperwork_file:
-                fine.car_paperwork_file = car_paperwork_file
+                try:
+                    fine.car_paperwork_file = car_paperwork_file
+                    print("Successfully saved car paperwork")
+                except Exception as e:
+                    print(f"Error saving car paperwork: {str(e)}")
 
             for image in images:
-                FinesAccidentsImage.objects.create(accidents_record=fine, image=image)
+                try:
+                    FinesAccidentsImage.objects.create(accidents_record=fine, image=image)
+                    print(f"Successfully saved image: {image.name}")
+                except Exception as e:
+                    print(f"Error saving image {image.name}: {str(e)}")
 
             for license_file in license_files:
-                LicenseFile.objects.create(accidents_record=fine, file=license_file)
+                try:
+                    LicenseFile.objects.create(accidents_record=fine, file=license_file)
+                    print(f"Successfully saved license file: {license_file.name}")
+                except Exception as e:
+                    print(f"Error saving license file {license_file.name}: {str(e)}")
 
             if emp_number:
                 try:
                     emp_instance = EmployesInfo.objects.get(ceoNumber=emp_number)
                     fine.employees.add(emp_instance)
+                    print(f"Successfully added employee: {emp_number}")
                 except EmployesInfo.DoesNotExist:
-                    pass
+                    print(f"Employee not found: {emp_number}")
+                except Exception as e:
+                    print(f"Error adding employee: {str(e)}")
 
-            fine.save()
+            try:
+                fine.save()
+                print("Successfully saved fine record")
+            except Exception as e:
+                print(f"Error saving fine record: {str(e)}")
+
         except Exception as e:
             print(f"Error in carddetails view: {str(e)}")
             # You might want to add error handling here
